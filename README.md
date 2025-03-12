@@ -3,137 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Статичне меню</title>
+    <title>Макет Envato</title>
     <style>
         body {
-            font-family: sans-serif; /* Загальний шрифт */
+            font-family: sans-serif;
+            background-image: url('bokeh-background.jpg'); /* Замініть на ваше зображення боке */
+            background-size: cover;
+            margin: 0; /* Видалити стандартні відступи body */
             display: flex;
-            justify-content: center; /* Центруємо меню горизонтально */
-            align-items: center;   /* Центруємо меню вертикально */
-            min-height: 100vh;  /* Щоб меню було по центру, навіть якщо мало контенту */
-            margin: 0;        /* Забираємо стандартні відступи */
-            background-color: #f8f8f8; /* Світло-сірий фон */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Забезпечити повну висоту вікна перегляду */
         }
 
-        .menu-container {
-            display: flex; /* Розміщуємо блоки в ряд */
-            gap: 20px;     /* Відступ між блоками */
+        .container {
+            display: flex;
+            flex-wrap: wrap; /* Дозволити модулям переноситися на менших екранах */
+            max-width: 1200px; /* Обмежити максимальну ширину */
+            width: 95%; /* Використовувати більшу частину екрана, але з деякими відступами */
+            gap: 20px; /* Простір між модулями */
         }
 
-        .menu-item {
-            width: 250px; /* Фіксована ширина */
-            border: 2px solid #ddd; /* Рамка навколо всього блоку */
-            text-align: center; /* Центруємо текст */
-            position: relative; /* Для позиціонування підпису */
+        .module {
+            width: calc(50% - 20px); /* Два модулі в рядку, враховуючи проміжок */
+            min-height: 200px; /* Мінімальна висота, налаштуйте за потребою */
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            font-size: 1.5em;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Додати тонку тінь */
+            box-sizing: border-box; /* Включити відступи в ширину/висоту */
         }
 
-        .menu-item img {
-            width: 100%;     /* Зображення на всю ширину */
-            height: 180px;   /* Фіксована висота */
-            object-fit: cover; /* Обрізка зображення, щоб воно вписувалося */
-            border-bottom: 2px solid #ddd; /* Рамка під зображенням */
-            display: block; /* Усуває невеликий пробіл під зображенням */
+        .module img {
+            max-width: 80%; /* Переконайтеся, що зображення вміщуються в модуль */
+            height: auto;
+            margin-bottom: 10px;
         }
 
-        .menu-item ul {
-            list-style: none; /* Забираємо маркери списку */
-            padding: 0;       /* Забираємо внутрішні відступи */
-            margin: 0;        /* Забираємо зовнішні відступи */
+        .audiojungle {
+            background-color: #4CAF50; /* Зелений */
         }
 
-        .menu-item ul li {
-            padding: 12px 0;  /* Відступи всередині пунктів меню */
-            border-bottom: 1px solid #eee; /* Лінія між пунктами */
+        .activeden {
+            background-color: #FFA500; /* Помаранчевий */
         }
 
-        .menu-item ul li:last-child {
-            border-bottom: none; /* Забираємо лінію у останнього пункта */
+        .photodune {
+            background-color: #2196F3; /* Синій */
         }
 
-        .menu-item a {
-            text-decoration: none; /* Забираємо підкреслення */
-            color: #444;           /* Колір тексту */
-            display: block;        /* Щоб посилання займало всю ширину */
-            padding: 12px;           /* Відступи навколо тексту */
+
+        .info-section {
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-sizing: border-box;
         }
 
-        /* Стилі для підпису */
-        .menu-item .caption {
-            position: absolute;  /* Абсолютне позиціонування */
-            bottom: 0;         /* Притискаємо до низу */
-            left: 0;
-            width: 100%;         /* На всю ширину */
-            background-color: rgba(0, 0, 0, 0.7); /* Напівпрозорий чорний фон */
-            color: white;          /* Білий текст */
-            padding: 8px;        /* Відступи */
-            box-sizing: border-box; /* Щоб padding не збільшував ширину */
-            font-size: 0.9em;      /* Трохи менший шрифт */
-            opacity: 0;            /* Спочатку прихований */
-            transition: opacity 0.3s ease; /* Плавна поява */
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
         }
 
-        .menu-item:hover .caption {
-            opacity: 1;            /* Показуємо підпис при наведенні */
+        .tab {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            background-color: #eee;
+            cursor: pointer;
+            margin-right: 5px;
         }
 
-        /* Стилі для центрального блоку (лисиця) */
-        .menu-item.fox ul li:hover {
-            background-color: #f5e1a9; /* Світло-жовтий фон при наведенні */
+        .tab.active {
+            background-color: white;
+            border-bottom: 1px solid white; /* Приховати нижню межу активної вкладки */
         }
 
-        .menu-item.fox ul li:hover a {
-            color: #222;
+        .tab-content {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 0 5px 5px 5px; /* Закруглити тільки нижні кути */
+        }
+        .logo-section{
+            display:flex;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-        /* Стилі для інших блоків */
-        .menu-item:not(.fox) a:hover {
-            color: #c75f3a;  /* Зміна кольору тексту при наведенні */
+        .logo-section img {
+            max-height:50px;
+            margin-right: 10px;
         }
+
+        .item-images {
+            display: flex;
+            flex-wrap: wrap; /* Дозволити зображенням переноситися */
+            gap: 10px;
+        }
+
+        .item-images img {
+            max-width: 80px; /* Налаштуйте за потребою */
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .time-modules {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: calc(50% - 20px); /* Займає те саме місце, що й більший модуль */
+        }
+        .time-module{
+            width: calc(33.33% - 10px); /* 3 модулі в рядку */
+            height: 80px;
+            background-color: lightgrey;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+        }
+
+        .time-module img{
+            width: 40px;
+            height:40px;
+            margin-bottom: 5px;
+        }
+         /* Адаптивні налаштування */
+        @media (max-width: 768px) {
+            .module, .time-modules {
+                width: 100%; /* Повна ширина на менших екранах */
+            }
+             .time-module{
+                width: calc(50% - 10px); /*Два на рядок на середніх пристроях.*/
+            }
+        }
+
+
+
     </style>
 </head>
 <body>
 
-<div class="menu-container">
-    <div class="menu-item">
-        <img src="https://via.placeholder.com/250x180/77dd77/ffffff?text=Змія" alt="Зображення змії">
-        <div class="caption">Зображення змінюється в певний час</div>
-        <ul>
-            <li><a href="#">Про Envato</a></li>
-            <li><a href="#">Магазини</a></li>
-            <li><a href="#">Мережа Tuts+</a></li>
-        </ul>
+<div class="container">
+
+    <div class="time-modules">
+        <div class="time-module">
+            <img src="activeden-icon.png" alt="activeden">
+            <span>(7:30 до 12:30)</span>
+            <span>Ранок</span>
+        </div>
+        <div class="time-module">
+            <img src="audiojungle-icon.png" alt="audiojungle">
+            <span>(12:30 до 17:30)</span>
+            <span>День</span>
+        </div>
+        <div class="time-module">
+            <img src="photodune-icon.png" alt="photodune">
+            <span>(17:30 до 00:30)</span>
+            <span>Вечір</span>
+        </div>
+         <div class="time-module">
+            <img src="envato-icon.png" alt="envato">
+            <span>(00:30 до 7:30)</span>
+            <span>Ніч</span>
+        </div>
+        <div class="time-module">
+             <img src="placeholder-icon.png" alt="Заглушка">
+            <span>Час</span>
+            <span>Мітка</span>
+        </div>
+        <div class="time-module">
+            <img src="placeholder-icon.png" alt="Заглушка">
+            <span>Час</span>
+            <span>Мітка</span>
+        </div>
+    </div>
+    <div class="module audiojungle">
+        <img src="snake.png" alt="Audiojungle Змія">
+        audiojungle
+    </div>
+    <div class="module photodune">
+        <img src="beetle.png" alt="Photodune Жук">
+        photodune
+    </div>
+    <div class="module activeden">
+        <img src="fox.png" alt="Activeden Лисиця">
+        activeden
     </div>
 
-    <div class="menu-item fox">
-        <img src="https://via.placeholder.com/250x180/f0b37e/ffffff?text=Лисиця" alt="Зображення лисиці">
-        <div class="caption"></div>
-        <ul>
-            <li><a href="#">Про Envato</a></li>
-            <li><a href="#">Магазини</a></li>
-            <li><a href="#">Мережа Tuts+</a></li>
-        </ul>
-    </div>
 
-    <div class="menu-item">
-        <img src="https://via.placeholder.com/250x180/77b5d9/ffffff?text=Жук" alt="Зображення жука">
-        <div class="caption">Зображення змінюється в певний час</div>
-        <ul>
-            <li><a href="#">Про Envato</a></li>
-            <li><a href="#">Магазини</a></li>
-            <li><a href="#">Мережа Tuts+</a></li>
-        </ul>
-    </div>
-    
-    <div class="menu-item">
-        <img src="https://via.placeholder.com/250x180/b19cd9/ffffff?text=Годинник" alt="Зображення годинника">
-        <div class="caption">(7:00 до 12:00)<br>Ранок</div>
-        <ul>
-            <li><a href="#">Про Envato</a></li>
-            <li><a href="#">Магазини</a></li>
-            <li><a href="#">Мережа Tuts+</a></li>
-        </ul>
+
+    <div class="info-section">
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('about')">Про Envato</div>
+            <div class="tab" onclick="showTab('marketplaces')">Магазини</div>
+            <div class="tab" onclick="showTab('tuts')">Мережа Tuts+</div>
+        </div>
+
+        <div class="tab-content" id="about">
+             <div class="logo-section">
+                <img src="envato-logo.png" alt="Логотип Envato">
+            </div>
+            <p>Envato – це стартап, що базується в Австралії, з людьми по всьому світу та сайтами, які щосекунди обслуговують сторінки. Ми почали у вітальні в 2006 році і з того часу неухильно працюємо над тим, щоб перетворити нашу компанію на претендента світового класу. Наш досвід – творчість, ми любимо відкритий код, ми віримо, що робота – це набагато більше, ніж просто заробляння грошей, і ми повністю віддані створенню чудових продуктів!</p>
+
+            <div class="item-images">
+                <img src="item1.png" alt="Елемент 1">
+                <img src="item2.png" alt="Елемент 2">
+                <img src="item3.png" alt="Елемент 3">
+                <img src="item4.png" alt="Елемент 4">
+                <img src="item5.png" alt="Елемент 5">
+                <!-- Додайте більше зображень елементів за потребою -->
+            </div>
+            <a href="https://envato.com">Відвідайте веб-сайт Envato</a>
+        </div>
+
+        <div class="tab-content" id="marketplaces" style="display: none;">
+            Вміст магазинів тут.
+        </div>
+
+        <div class="tab-content" id="tuts" style="display: none;">
+            Вміст мережі Tuts+ тут.
+        </div>
     </div>
 </div>
+
+<script>
+    function showTab(tabId) {
+        // Сховати весь вміст вкладок
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.style.display = 'none';
+        });
+
+        // Видалити клас 'active' з усіх вкладок
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.classList.remove('active');
+        });
+
+        // Показати вміст вибраної вкладки та позначити вкладку як активну
+        document.getElementById(tabId).style.display = 'block';
+        event.currentTarget.classList.add('active');
+    }
+</script>
 
 </body>
 </html>
