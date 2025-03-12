@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Макет Envato (Фінальний, 3 Таблиці)</title>
+    <title>Макет Envato (Таблиці одна на одній)</title>
     <style>
         body {
             font-family: sans-serif;
-            background-image: url('bokeh-background.jpg'); /* Замініть на ВАШЕ зображення */
+            background-image: url('bokeh-background.jpg'); /* Замініть на ваше зображення */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -23,21 +23,29 @@
         .container {
             max-width: 1000px;
             width: 90%;
-            display: flex;
-            flex-direction: column; /* Stack tables vertically */
-            gap: 20px;
+            /*  display: flex;  Видалено, бо тепер накладання */
+            /*  flex-direction: column; Видалено */
+            /*  gap: 20px; Видалено */
+            position: relative; /* Для абсолютного позиціонування таблиць */
         }
 
-        /* Контейнер для кожної "таблиці" */
+        /* Контейнер для кожної "таблиці" (тепер абсолютно позиціоновані) */
         .table-container {
             border: 1px solid #ccc;
             border-radius: 8px;
             padding: 15px;
             background-color: white;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: relative; /* For absolute background positioning */
-            overflow: hidden; /* Clip background images */
+            position: absolute; /* Абсолютне позиціонування */
+            top: 0;
+            left: 0;
+            width: 100%; /* Займають всю ширину */
+            height: auto;  /*  Висота визначається контентом */
+             /* Забезпечує правильне відображення z-index */
+            overflow: hidden; /* Hide backgrounds when they are not active*/
+
         }
+
         /* Контейнер для фонових зображень */
         .background-images {
             position: absolute;
@@ -45,20 +53,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
+             display: flex;
             z-index: 1;
-
         }
-        .background-images > div{
-             background-size: cover;
+          .background-images > div{
+              background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            width: 100%; /* Full width*/
-            height: 100%;
-             display: none;
+            width: 100%;
+            height:100%;
+            display: none;
         }
-        /* Показуємо зображення, якщо є відповідний якір */
-        .background-images > div:target {
+           /* Показуємо зображення, якщо є відповідний якір */
+        .background-images > div:target{
             display: block;
         }
 
@@ -67,7 +74,7 @@
         .table-container:nth-child(2) .bg-audiojungle,
         .table-container:nth-child(3) .bg-audiojungle
         {
-            display: block;
+             display: block;
         }
 
         /* Класи для кожного фонового зображення */
@@ -75,13 +82,14 @@
         .bg-activeden   { background-image: url('fox.png');   }
         .bg-photodune   { background-image: url('beetle.png');  }
 
-         /* Навігація (змінює фон) */
+        /* Навігація (змінює фон, спільна для всіх) */
         .image-nav {
             display: flex;
             gap: 10px;
             margin-bottom: 10px;
              position: relative;
-            z-index: 3;
+            z-index: 4; /* Над усіма таблицями */
+             justify-content: center; /* Center the navigation */
         }
 
         .image-nav a {
@@ -91,37 +99,36 @@
             border-radius: 50%;
             background-color: #ddd;
             border: 1px solid #ccc;
-            text-indent: -9999px; /* Hide text */
+            text-indent: -9999px;
             overflow: hidden;
         }
-        .image-nav a:hover,
+         .image-nav a:hover,
         .image-nav a:focus{
            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);/* Add a hover effect */
         }
 
-        /* Основний контент (зверху фону) */
+        /* Основний контент */
         .content {
             position: relative;
             z-index: 2;
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            justify-content: space-between; /* Distribute space evenly */
+             justify-content: space-between;
         }
 
-
-        /* Верхній ряд (модулі з картинками) */
+          /* Верхній ряд (модулі з картинками) */
         .top-row {
             display: flex;
-             width: 48%;  /*  щоб було місце для модулів часу */
+            width: 48%;  /*  щоб було місце для модулів часу */
             gap: 10px;
-            flex-wrap: wrap; /* Allow items to wrap*/
-            justify-content: space-between;
+             flex-wrap: wrap; /* Allow items to wrap*/
+             justify-content: space-between; /* Distribute space evenly */
 
         }
 
         .image-module {
-            border-radius: 8px;
+           border-radius: 8px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -130,11 +137,12 @@
             color: white;
             font-size: 1.2em;
             padding: 15px;
-             flex: 1 0 calc(33.33% - 10px);
-             min-width: 0; /* Allow shrinking */
+             flex: 1 0 calc(33.33% - 10px); /* Three items per row, with gap */
+             min-width: 0; /* Allow for shrinking */
+
         }
         .image-module span{
-          font-size:0.75em;
+            font-size: 0.75em;
         }
 
         .image-module img {
@@ -143,26 +151,25 @@
             margin-bottom: 8px;
         }
 
-
         /* Модулі часу */
         .time-modules {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             grid-template-rows: repeat(3, auto);
             gap: 10px;
-             width: 48%;
+            width: 48%;
 
         }
 
         .time-module {
-            background-color: rgba(220, 220, 220, 0.8);
+             background-color: rgba(220, 220, 220, 0.8);
             border-radius: 4px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
              padding: 5px;
-              text-align: center;
+            text-align: center;
         }
 
         .time-module img {
@@ -171,19 +178,19 @@
             margin-bottom: 3px;
         }
          .time-module span{
-             font-size: 0.7em; /*Smaller font size.*/
-         }
+            font-size: 0.7em;
+        }
 
         /* Інфо-секція */
         .info-section {
-           width: 100%;
+            width: 100%;
             background-color: white;
             border-radius: 8px;
             padding: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             box-sizing: border-box;
             font-size: 0.8em;
-            margin-top: 20px; /* Space from top content */
+            margin-top: 20px; /* Add space from time modules*/
         }
 
         /* Tabs (no JS) */
@@ -198,35 +205,38 @@
             display: none;
         }
         .tab-content:target { display: block; }
-         #about { display: block; }  /* Show first tab by default */
-        .tabs a:first-child { background-color: white; border-bottom: 1px solid white;}
 
-        .logo-section { display: flex; align-items: center; margin-bottom: 8px;}
-        .logo-section img { max-height: 40px; margin-right: 8px;}
-        .item-images { display: flex; flex-wrap: wrap; gap: 5px;}
+          /* Стилізуємо першу вкладку як активну за замовчуванням */
+        #about1 { display: block; }
+        #about2, #about3 {display: none; } /* Hide by default */
+        .tabs a:first-child { background-color: white; border-bottom: 1px solid white; }
+
+        .logo-section { display: flex; align-items: center; margin-bottom: 8px; }
+        .logo-section img { max-height: 40px; margin-right: 8px; }
+        .item-images { display: flex; flex-wrap: wrap; gap: 5px; }
         .item-images img { max-width: 70px; height: auto; border: 1px solid #ddd; border-radius: 4px;}
         .visit-link { margin-top: 10px; font-size: 1em; display: block; text-align: center;}
 
-         /* Адаптивність */
-        @media (max-width: 768px) {
-            .top-row,
+           /* Адаптивність */
+         @media (max-width: 768px) {
+             .top-row,
             .time-modules {
                 width: 100%; /* Full width on smaller screens*/
             }
-             .time-modules{
+            .time-modules{
                  grid-template-columns: repeat(3, 1fr); /* 3 columns on mobile */
-                 grid-template-rows: repeat(2, auto); /*Two rows.*/
+                grid-template-rows: repeat(2, auto); /*Two rows.*/
             }
-              .image-module{
+             .image-module{
                 width: 48%;
             }
 
         }
-         @media (max-width: 480px) {
-            .image-module{
+          @media (max-width: 480px) {
+             .image-module{
                 width: 100%;
             }
-              .time-modules{
+            .time-modules{
                  grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
                  grid-template-rows: repeat(3, auto);
             }
@@ -237,31 +247,33 @@
 
 <div class="container">
 
+    <!-- Спільна навігація для всіх таблиць -->
+    <div class="image-nav">
+        <a href="#audiojungle">Audiojungle</a>
+        <a href="#activeden">Activeden</a>
+        <a href="#photodune">Photodune</a>
+    </div>
+
     <!-- Перша "таблиця" -->
-    <div class="table-container">
-         <div class="image-nav">
-            <a href="#audiojungle1">Audiojungle</a>
-            <a href="#activeden1">Activeden</a>
-            <a href="#photodune1">Photodune</a>
-        </div>
-        <div class="background-images">
-            <div id="audiojungle1" class="bg-audiojungle"></div>
-            <div id="activeden1" class="bg-activeden"></div>
-            <div id="photodune1" class="bg-photodune"></div>
+    <div class="table-container" style="z-index: 4;">
+       <div class="background-images">
+            <div id="audiojungle" class="bg-audiojungle"></div>
+            <div id="activeden" class="bg-activeden"></div>
+            <div id="photodune" class="bg-photodune"></div>
         </div>
         <div class="content">
-             <div class="top-row">
-                <div class="image-module audiojungle">
-                    <img src="snake.png" alt="Audiojungle Змія">
-                    <span>audiojungle</span>
-                </div>
+            <div class="top-row">
+               <div class="image-module audiojungle">
+                  <img src="snake.png" alt="Audiojungle Змія">
+                  <span>audiojungle</span>
+               </div>
                 <div class="image-module activeden">
                    <img src="fox.png" alt="Activeden Лисиця">
-                    <span>activeden</span>
+                   <span>activeden</span>
                 </div>
-                <div class="image-module photodune">
+                 <div class="image-module photodune">
                   <img src="beetle.png" alt="Photodune Жук">
-                    <span>photodune</span>
+                 <span>photodune</span>
                 </div>
             </div>
             <div class="time-modules">
@@ -270,28 +282,28 @@
                     <span>(7:30 до 12:30)</span>
                     <span>Ранок</span>
                 </div>
-                <div class="time-module">
+                 <div class="time-module">
                      <img src="audiojungle-icon.png" alt="audiojungle">
-                    <span>(12:30 до 17:30)</span>
-                    <span>День</span>
-                </div>
-                <div class="time-module">
-                     <img src="photodune-icon.png" alt="photodune">
-                    <span>(17:30 до 00:30)</span>
-                    <span>Вечір</span>
-                </div>
-                <div class="time-module">
-                   <img src="snake.png" alt="Змія">
-                   <span>(00:30 до 7:30)</span>
-                   <span>Ніч</span>
+                   <span>(12:30 до 17:30)</span>
+                   <span>День</span>
                 </div>
                  <div class="time-module">
-                     <img src="placeholder-icon.png" alt="Заглушка">
-                    <span>Час</span>
-                    <span>Мітка</span>
+                    <img src="photodune-icon.png" alt="photodune">
+                   <span>(17:30 до 00:30)</span>
+                   <span>Вечір</span>
+                </div>
+                 <div class="time-module">
+                   <img src="snake.png" alt="Змія">
+                    <span>(00:30 до 7:30)</span>
+                   <span>Ніч</span>
                 </div>
                 <div class="time-module">
-                     <img src="placeholder-icon.png" alt="Заглушка">
+                    <img src="placeholder-icon.png" alt="Заглушка">
+                   <span>Час</span>
+                   <span>Мітка</span>
+                </div>
+                <div class="time-module">
+                    <img src="placeholder-icon.png" alt="Заглушка">
                     <span>Час</span>
                     <span>Мітка</span>
                 </div>
@@ -305,18 +317,18 @@
                 </div>
 
                 <div class="tab-content" id="about1">
-                   <div class="logo-section">
+                    <div class="logo-section">
                         <img src="envato-logo.png" alt="Логотип Envato">
                     </div>
                     <p>Envato – це стартап...</p>
-                    <div class="item-images">
+                     <div class="item-images">
                         <img src="item1.png" alt="Елемент 1">
                         <img src="item2.png" alt="Елемент 2">
                         <img src="item3.png" alt="Елемент 3">
-                        <img src="item4.png" alt="Елемент 4">
-                        <img src="item5.png" alt="Елемент 5">
+                         <img src="item4.png" alt="Елемент 4">
+                         <img src="item5.png" alt="Елемент 5">
                     </div>
-                    <a class="visit-link" href="https://envato.com">Відвідайте веб-сайт Envato</a>
+                   <a class="visit-link" href="https://envato.com">Відвідайте веб-сайт Envato</a>
                 </div>
 
                 <div class="tab-content" id="marketplaces1">
@@ -330,66 +342,61 @@
         </div>
     </div>
 
-    <!-- Друга "таблиця" (копія першої, але з іншим ID для вкладок) -->
- <div class="table-container">
-          <div class="image-nav">
-            <a href="#audiojungle2">Audiojungle</a>
-            <a href="#activeden2">Activeden</a>
-            <a href="#photodune2">Photodune</a>
-        </div>
-        <div class="background-images">
-            <div id="audiojungle2" class="bg-audiojungle"></div>
-            <div id="activeden2" class="bg-activeden"></div>
-            <div id="photodune2" class="bg-photodune"></div>
+    <!-- Друга "таблиця" (з іншим z-index і контентом) -->
+    <div class="table-container" style="z-index: 3;">
+       <div class="background-images">
+            <div  class="bg-audiojungle"></div>
+            <div  class="bg-activeden"></div>
+            <div  class="bg-photodune"></div>
         </div>
         <div class="content">
-             <div class="top-row">
+            <div class="top-row">
                  <div class="image-module audiojungle">
-                     <img src="snake.png" alt="Audiojungle Змія">
-                    <span>audiojungle</span>
+                   <img src="snake.png" alt="Audiojungle Змія">
+                   <span>audiojungle</span>
                 </div>
-                 <div class="image-module activeden">
-                    <img src="fox.png" alt="Activeden Лисиця">
+                <div class="image-module activeden">
+                   <img src="fox.png" alt="Activeden Лисиця">
                     <span>activeden</span>
                 </div>
-                 <div class="image-module photodune">
-                    <img src="beetle.png" alt="Photodune Жук">
-                     <span>photodune</span>
+                <div class="image-module photodune">
+                     <img src="beetle.png" alt="Photodune Жук">
+                    <span>photodune</span>
                 </div>
             </div>
             <div class="time-modules">
                 <div class="time-module">
-                     <img src="activeden-icon.png" alt="activeden">
-                     <span>(7:30 до 12:30)</span>
-                    <span>Ранок</span>
+                    <img src="activeden-icon.png" alt="activeden">
+                    <span>(7:30 до 12:30)</span>
+                     <span>Ранок</span>
                 </div>
                 <div class="time-module">
-                    <img src="audiojungle-icon.png" alt="audiojungle">
-                     <span>(12:30 до 17:30)</span>
-                     <span>День</span>
+                     <img src="audiojungle-icon.png" alt="audiojungle">
+                   <span>(12:30 до 17:30)</span>
+                    <span>День</span>
                 </div>
-                <div class="time-module">
-                     <img src="photodune-icon.png" alt="photodune">
-                    <span>(17:30 до 00:30)</span>
-                    <span>Вечір</span>
+               <div class="time-module">
+                    <img src="photodune-icon.png" alt="photodune">
+                   <span>(17:30 до 00:30)</span>
+                   <span>Вечір</span>
                 </div>
                  <div class="time-module">
-                     <img src="snake.png" alt="Змія">
-                      <span>(00:30 до 7:30)</span>
+                    <img src="snake.png" alt="Змія">
+                    <span>(00:30 до 7:30)</span>
                     <span>Ніч</span>
                 </div>
-                <div class="time-module">
-                    <img src="placeholder-icon.png" alt="Заглушка">
+               <div class="time-module">
+                   <img src="placeholder-icon.png" alt="Заглушка">
                     <span>Час</span>
-                     <span>Мітка</span>
+                    <span>Мітка</span>
                 </div>
-                 <div class="time-module">
-                     <img src="placeholder-icon.png" alt="Заглушка">
-                     <span>Час</span>
-                     <span>Мітка</span>
+                <div class="time-module">
+                   <img src="placeholder-icon.png" alt="Заглушка">
+                    <span>Час</span>
+                    <span>Мітка</span>
                 </div>
             </div>
-             <div class="info-section">
+            <div class="info-section">
                 <!-- Tabs (no JS) -->
                 <div class="tabs">
                     <a href="#about2" class="tab">Про Envato</a>
@@ -398,14 +405,14 @@
                 </div>
 
                 <div class="tab-content" id="about2">
-                    <div class="logo-section">
-                         <img src="envato-logo.png" alt="Логотип Envato">
+                   <div class="logo-section">
+                        <img src="envato-logo.png" alt="Логотип Envato">
                     </div>
                     <p>Інший текст про Envato...</p>
                     <div class="item-images">
-                        <img src="item1.png" alt="Елемент 1">
-                         <img src="item2.png" alt="Елемент 2">
-                         <img src="item3.png" alt="Елемент 3">
+                       <img src="item1.png" alt="Елемент 1">
+                        <img src="item2.png" alt="Елемент 2">
+                       <img src="item3.png" alt="Елемент 3">
                         <img src="item4.png" alt="Елемент 4">
                         <img src="item5.png" alt="Елемент 5">
                     </div>
@@ -413,7 +420,7 @@
                 </div>
 
                 <div class="tab-content" id="marketplaces2">
-                   Інший вміст магазинів.
+                    Інший вміст магазинів.
                 </div>
 
                 <div class="tab-content" id="tuts2">
@@ -423,63 +430,58 @@
         </div>
     </div>
 
-    <!-- Третя "таблиця" (копія, знову інші ID) -->
-  <div class="table-container">
-           <div class="image-nav">
-            <a href="#audiojungle3">Audiojungle</a>
-            <a href="#activeden3">Activeden</a>
-            <a href="#photodune3">Photodune</a>
-        </div>
-        <div class="background-images">
-            <div id="audiojungle3" class="bg-audiojungle"></div>
-            <div id="activeden3" class="bg-activeden"></div>
-            <div id="photodune3" class="bg-photodune"></div>
+    <!-- Третя "таблиця" (з іншим z-index і контентом) -->
+    <div class="table-container" style="z-index: 2;">
+         <div class="background-images">
+            <div  class="bg-audiojungle"></div>
+            <div  class="bg-activeden"></div>
+            <div  class="bg-photodune"></div>
         </div>
         <div class="content">
-            <div class="top-row">
-                 <div class="image-module audiojungle">
-                    <img src="snake.png" alt="Audiojungle Змія">
-                     <span>audiojungle</span>
+           <div class="top-row">
+                <div class="image-module audiojungle">
+                   <img src="snake.png" alt="Audiojungle Змія">
+                   <span>audiojungle</span>
                 </div>
-                 <div class="image-module activeden">
-                     <img src="fox.png" alt="Activeden Лисиця">
-                     <span>activeden</span>
+               <div class="image-module activeden">
+                    <img src="fox.png" alt="Activeden Лисиця">
+                   <span>activeden</span>
                 </div>
-                <div class="image-module photodune">
-                    <img src="beetle.png" alt="Photodune Жук">
-                    <span>photodune</span>
+               <div class="image-module photodune">
+                   <img src="beetle.png" alt="Photodune Жук">
+                   <span>photodune</span>
                 </div>
             </div>
             <div class="time-modules">
-               <div class="time-module">
-                     <img src="activeden-icon.png" alt="activeden">
-                     <span>(7:30 до 12:30)</span>
-                    <span>Ранок</span>
-                </div>
-                 <div class="time-module">
-                    <img src="audiojungle-icon.png" alt="audiojungle">
-                      <span>(12:30 до 17:30)</span>
-                     <span>День</span>
+                <div class="time-module">
+                   <img src="activeden-icon.png" alt="activeden">
+                    <span>(7:30 до 12:30)</span>
+                   <span>Ранок</span>
                 </div>
                 <div class="time-module">
-                    <img src="photodune-icon.png" alt="photodune">
-                    <span>(17:30 до 00:30)</span>
-                     <span>Вечір</span>
+                   <img src="audiojungle-icon.png" alt="audiojungle">
+                    <span>(12:30 до 17:30)</span>
+                   <span>День</span>
                 </div>
-                 <div class="time-module">
-                     <img src="snake.png" alt="Змія">
-                    <span>(00:30 до 7:30)</span>
+                <div class="time-module">
+                   <img src="photodune-icon.png" alt="photodune">
+                    <span>(17:30 до 00:30)</span>
+                    <span>Вечір</span>
+                </div>
+               <div class="time-module">
+                   <img src="snake.png" alt="Змія">
+                   <span>(00:30 до 7:30)</span>
                     <span>Ніч</span>
                 </div>
                 <div class="time-module">
                     <img src="placeholder-icon.png" alt="Заглушка">
                    <span>Час</span>
-                     <span>Мітка</span>
+                    <span>Мітка</span>
                 </div>
                  <div class="time-module">
-                    <img src="placeholder-icon.png" alt="Заглушка">
-                   <span>Час</span>
-                    <span>Мітка</span>
+                   <img src="placeholder-icon.png" alt="Заглушка">
+                  <span>Час</span>
+                   <span>Мітка</span>
                 </div>
             </div>
             <div class="info-section">
@@ -490,19 +492,19 @@
                     <a href="#tuts3" class="tab">Мережа Tuts+</a>
                 </div>
 
-                <div class="tab-content" id="about3">
+                 <div class="tab-content" id="about3">
                     <div class="logo-section">
-                         <img src="envato-logo.png" alt="Логотип Envato">
+                       <img src="envato-logo.png" alt="Логотип Envato">
                     </div>
                     <p>Ще інший текст про Envato...</p>
-                    <div class="item-images">
+                     <div class="item-images">
                         <img src="item1.png" alt="Елемент 1">
-                         <img src="item2.png" alt="Елемент 2">
-                        <img src="item3.png" alt="Елемент 3">
-                        <img src="item4.png" alt="Елемент 4">
+                        <img src="item2.png" alt="Елемент 2">
+                         <img src="item3.png" alt="Елемент 3">
+                       <img src="item4.png" alt="Елемент 4">
                         <img src="item5.png" alt="Елемент 5">
                     </div>
-                    <a  class="visit-link" href="https://envato.com">Відвідайте веб-сайт Envato</a>
+                    <a class="visit-link"  href="https://envato.com">Відвідайте веб-сайт Envato</a>
                 </div>
 
                 <div class="tab-content" id="marketplaces3">
@@ -510,12 +512,11 @@
                 </div>
 
                 <div class="tab-content" id="tuts3">
-                    Ще інший вміст мережі Tuts+.
+                   Ще інший вміст мережі Tuts+.
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 </body>
